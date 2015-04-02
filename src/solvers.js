@@ -18,7 +18,7 @@ window.findNRooksSolution = function(n) {
   var findSolution = function(oldBoard,row,col) {
     var board = new Board(oldBoard.rows());
     board.togglePiece(row,col);
-    board.rows().forEach(function(row){console.log(row.toString())});
+    // board.rows().forEach(function(row){console.log(row.toString())});
     // console.log("row: " + row + ", col: " + col);
     // console.log("-----");
     if(board.hasAnyRooksConflicts()) {
@@ -57,18 +57,29 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  if(n > 5) { return "this function doesn't run for n>5"; }
+  function rFact(num)
+  {
+      if (num === 0)
+        { return 1; }
+      else
+        { return num * rFact( num - 1 ); }
+  }
+  return rFact(n);
+
+
+  if(n > 8) { return "hnnnnggggg"; }
   var solutions = [];
   var findSolution = function(oldBoard,row,col) {
     var board = new Board(oldBoard.rows());
     board.togglePiece(row,col);
-    board.rows().forEach(function(row){console.log(row.toString())});
+    // board.rows().forEach(function(row){console.log(row.toString())});
     // console.log("row: " + row + ", col: " + col);
     // console.log("-----");
-    if(board.hasAnyRooksConflicts()) {
-      board.togglePiece(row,col);
-      return;
-    }
+
+    // if(board.hasAnyQueensConflicts()) {
+    //   board.togglePiece(row,col);
+    //   return;
+    // }
     if(row === n - 1) {
       // console.log("Solution found above.");
       solutions.push(board);
@@ -76,6 +87,15 @@ window.countNRooksSolutions = function(n) {
       return;
     }
     for(var j=0;j<n;j++) {
+      board.togglePiece(row+1,j);
+      board.rows().forEach(function(row){console.log(row.toString())});
+      // console.log("check conflicts");
+      if(board.hasAnyRooksConflicts()) {
+        board.togglePiece(row+1,j);
+        continue;
+      }
+      board.togglePiece(row+1,j);
+
       findSolution(board,row+1,j);
     }
     board.togglePiece(row,col);
@@ -101,7 +121,7 @@ window.findNQueensSolution = function(n) {
   var findSolution = function(oldBoard,row,col) {
     var board = new Board(oldBoard.rows());
     board.togglePiece(row,col);
-    board.rows().forEach(function(row){console.log(row.toString())});
+    // board.rows().forEach(function(row){console.log(row.toString())});
     // console.log("row: " + row + ", col: " + col);
     // console.log("-----");
     if(board.hasAnyQueensConflicts()) {
@@ -139,7 +159,7 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  if(n > 5) { return "this function doesn't run for n>5"; }
+  // if(n > 4) { return "stahp"; }
   if(n === 0) { return 1; }
   if(n === 2 || n ===3) {
     return 0;
@@ -148,13 +168,14 @@ window.countNQueensSolutions = function(n) {
   var findSolution = function(oldBoard,row,col) {
     var board = new Board(oldBoard.rows());
     board.togglePiece(row,col);
-    board.rows().forEach(function(row){console.log(row.toString())});
+    // // board.rows().forEach(function(row){console.log(row.toString())});
     // console.log("row: " + row + ", col: " + col);
     // console.log("-----");
-    if(board.hasAnyQueensConflicts()) {
-      board.togglePiece(row,col);
-      return;
-    }
+
+    // if(board.hasAnyQueensConflicts()) {
+    //   board.togglePiece(row,col);
+    //   return;
+    // }
     if(row === n - 1) {
       // console.log("Solution found above.");
       solutions.push(board);
@@ -162,6 +183,15 @@ window.countNQueensSolutions = function(n) {
       return;
     }
     for(var j=0;j<n;j++) {
+      board.togglePiece(row+1,j);
+      board.rows().forEach(function(row){console.log(row.toString())});
+      // console.log("check conflicts");
+      if(board.hasAnyQueensConflicts()) {
+        board.togglePiece(row+1,j);
+        continue;
+      }
+      board.togglePiece(row+1,j);
+
       findSolution(board,row+1,j);
     }
     board.togglePiece(row,col);
