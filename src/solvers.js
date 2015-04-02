@@ -24,29 +24,33 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var board = new Board({'n':n}), solutions = [];
-  // change 'board' variable name on 27
-  // eliminate for loop on ~46
-  // build local variable in recursive
-  var findSolution = function(board,row,col) {
+  if(n > 5) { return; }
+  var solutions = [];
+  var findSolution = function(oldBoard,row,col) {
+    var board = new Board(oldBoard.rows());
     board.togglePiece(row,col);
+    board.rows().forEach(function(row){console.log(row.toString())});
+    // console.log("row: " + row + ", col: " + col);
+    // console.log("-----");
     if(board.hasAnyRooksConflicts()) {
-      // board.togglePiece(row,col);
-      return; // or something like that...?
-    }
-    if(row === n - 1) {
-      solutions.push(board);
-      // board.togglePiece(row,col);
+      board.togglePiece(row,col);
       return;
     }
-    for(var i=0;i<n;i++) {
-      findSolution(board,row+1,i);
+    if(row === n - 1) {
+      // console.log("Solution found above.");
+      solutions.push(board);
+      board.togglePiece(row,col);
+      return;
     }
+    for(var j=0;j<n;j++) {
+      findSolution(board,row+1,j);
+    }
+    board.togglePiece(row,col);
   }
 
   for(var i=0;i<n;i++) {
+    var board = new Board({'n':n});
     findSolution(board,0,i);
-    // board.togglePiece(0,i);
   }
 
   // console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
